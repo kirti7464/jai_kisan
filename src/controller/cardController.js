@@ -5,7 +5,7 @@ const cardModel = require('../models/cardModel')
 
 const getCards = async function(req,res){
     try{let x= await cardModel.find()
-    if(!x) return res.status(404).send({status:true,messgae:"There is no card"})
+    if(x.length<=0) return res.status(404).send({status:true,messgae:"There is no card"})
     return res.status(200).send({status:true,data:x})
 }catch(er){
     return res.status.send({status:false,message:er.message})

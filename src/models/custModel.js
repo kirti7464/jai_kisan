@@ -1,28 +1,47 @@
 const mongoose = require('mongoose')
 
-const custSchema = new mongoose.Schema({
-    firstName:String,
-    lastName:String,
-    mobileNumber:{
-        type:String,
-        maxlength:10
+const customerSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true
+      },
+    lastName: {
+        type: String,
+        required: true
+      },
+    mobileNumber: {
+        type: String,
+        required: true,
+        minLength: 9,
+        maxLength: 10
+      },
+    DOB: {
+        type: Date
+      },
+    emailID : {
+        type : String,
+        required: true,
+        unique: true,
+        validate: {
+            validator: function(value) {
+              // Regular expression to validate email format
+              return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            },
+            message: 'Invalid email format'
+          }
     },
-    DOB:date,
-    emailID:{
-        type:String,
-        match:/^([...(a-z)])+@([/a-z/]+\.(com|in|org)$)/gi
+    address : String,
+    customerID : {
+        type : String,
+        unique : true
     },
-    address:String,
-    customerID:{
-        type:String,
-        uppercase:true
-    },
-    status:{
-        type:String,
-        enum:["ACTIVE","INACTIVE"]
+    status : {
+        type : String,
+        enum : ["ACTIVE", "INACTIVE"],
+        default: 'ACTIVE'
     }
 
-})
 
-module.exports = mongoose.model('cust',custSchema)
+},{timestamps : true})
 
+module.exports = mongoose.model("cust",customerSchema);
